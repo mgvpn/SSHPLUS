@@ -131,10 +131,10 @@ cat > "$CONFIG_FILE" << EOF
     },
     "prices": {
         "test_hours": 1,
-        "price_7d": 1500.00,
-        "price_15d": 2500.00,
-        "price_30d": 4000.00,
-        "price_50d": 6000.00,
+        "price_7d": 3000.00,
+        "price_15d": 4000.00,
+        "price_30d": 7000.00,
+        "price_50d": 9700.00,
         "currency": "ARS"
     },
     "mercadopago": {
@@ -297,9 +297,9 @@ async function sendMenu(from) {
 Elija una opción:
 
 1️⃣ *PRUEBA GRATIS* - ${config.prices.test_hours} hora
-2️⃣ *COMPRAR USUARIO* - Planes disponibles
-3️⃣ *DESCARGAR APP* - Aplicación Android
-4️⃣ *SOPORTE* - Ayuda y consultas
+2️⃣ *COMPRAR USUARIO* 
+3️⃣ *DESCARGAR APP*
+4️⃣ *SOPORTE*
 
 Para seleccionar, escribe el número (ej: 1)`;
     
@@ -318,7 +318,7 @@ Planes MENSUALES:
 3️⃣ 30 días - $${config.prices.price_30d} ARS
 4️⃣ 50 días - $${config.prices.price_50d} ARS
 
-0️⃣ Volver al menú principal
+0️⃣ Volver al menu principal
 
 Escribe el número del plan deseado`;
     
@@ -406,7 +406,7 @@ async function startBot() {
 🔑 Contraseña: ${DEFAULT_PASSWORD}
 ⏰ Duración: ${config.prices.test_hours} hora
 📱 App: ${config.links.app_download}
-
+💡 Ingresa el link descarga la app una vez descargado abrir - click en mas detalles - instalar de todas formas 
 ¡Disfruta tu prueba!`;
                         
                         await client.sendText(from, response);
@@ -486,9 +486,9 @@ Te ayudará con el proceso de pago y creación de tu cuenta.`);
 🔗 Enlace: ${config.links.app_download}
 
 💡 Instrucciones:
-1. Abre el enlace
+1. Abre el link
 2. Descarga el APK
-3. Instala la aplicación
+3. Abrir la aplicación - Click en mas detalles - instalar de todas formas 
 4. Usa tus credenciales
 
 👤 Usuario: (se te proporcionará)
