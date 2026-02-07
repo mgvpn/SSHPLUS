@@ -292,7 +292,7 @@ async function createSSHUser(phone, username, days) {
 }
 
 async function sendMenu(from) {
-    const menu = `🤖 *SSH BOT PRO*
+    const menu = `🚀 *BOT MGVPN*
 
 Elija una opción:
 
