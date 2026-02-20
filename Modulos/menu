@@ -240,7 +240,7 @@ clear
 echo -e "\e[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
 echo -e "${cyan}SISTEMA         MEMORIA RAM      PROCESADOR "
 echo -e "${amarillo} $_system   Ram:${verde}$_ram     Cpu: ${amarillo}$_core\e[0m"
-echo -e "${rojo}mod: ${verde}diegovip7🇦🇷   ${verde}$_usor  ${verde}$_usop\e[0m"
+echo -e "${rojo}mod: ${verde}   ${verde}$_usor  ${verde}$_usop\e[0m"
 echo -e "\e[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
 [[ ! -e /tmp/att ]]  && {
     echo -e "${amarillo} Onlines:${verde} $_onlin     ${blanco}Expirados: ${rojo}$_userexp ${amarillo}Total: ${verde}$_tuser\e[0m"
@@ -265,7 +265,7 @@ case "$x" in
    21)
    clear
    addhost
-   echo -ne "\n${rojo}COMPRAR DROPLET EN TELEGRAM @vps10 ${amarillo} \n ENTER para volver al ${verde}MENU!\e[0m"; read
+   echo -ne "\n${rojo}  ${amarillo} \n ENTER para volver al ${verde}MENU!\e[0m"; read
    menu2
    ;;
    22)
@@ -377,7 +377,7 @@ echo -e "
 echo ""
 echo -e "\e[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
 echo ""
-echo -ne "${verde}   WEP QUE DESEA HACER ${amarillo}?${rojo}?\e[1;37m : "; read x
+echo -ne "${verde}    QUE DESEA HACER ${amarillo}?${rojo}?\e[1;37m : "; read x
 
 case "$x" in 
    1 | 01)
@@ -425,7 +425,7 @@ case "$x" in
    9 | 09)
    clear
    infousers
-   echo -ne "\n${rojo}Argentina🤠 🇦🇷 ${amarillo} VPS: ${verde}wep!\e[0m
+   echo -ne "\n${rojo}Argentina 🇦🇷 ${amarillo} VPS: ${verde} \e[0m
 \n${rojo}ENTER ${amarillo}para VOLVER al ${verde}MENU!\e[0m"; read
    ;;
    10)
