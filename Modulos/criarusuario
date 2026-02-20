@@ -389,14 +389,14 @@ echo "$username $sshlimiter" >>/root/usuarios.db
 	}
 } || {
 	clear
-	echo -e "\E[44;1;37m  USER CREADO 🇦🇷⭐⭐⭐🌍 !    \E[0m"
+	echo -e "\E[44;1;37m  USER CREADO ✅️ !    \E[0m"
         echo -e "\n Limite $sshlimiter Expira en: $gui "
-    echo -e "\n  USUARIO UDP Donweb 👇🏻🌜"
-	   echo -e "\n $IP:1-911@$username:$password"
-   echo -e "\n  USUARIO UDP INETGAMING 👇🏻🌛"
+    echo -e "\n  "
+	   echo -e "\n $IP:80@$username:$password"
+   echo -e "\n  "
      echo -e "\n $IP:1-911@$username:$password"
-   echo -e "\n  USUARIO WS PERSONAL👇🏻🌞"
-      echo -e "\n  www.personal.com.ar:80@$username:$password"
+   echo -e "\n  USUARIO SSH"
+      echo -e "\n  host:80@$username:$password"
      
 }
      echo -e "Argentina🇦🇷🌎⭐⭐⭐"
