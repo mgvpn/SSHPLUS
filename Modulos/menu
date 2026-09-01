@@ -1,7 +1,6 @@
 #!/bin/bash
 # ═══════════════════════════════════════════════════════════
-#  Script MGVPN - PANEL PRINCIPAL
-#  Diseño profesional con sistema HWID
+#  MGVPN MANAGER v3.0 - Panel de Control
 # ═══════════════════════════════════════════════════════════
 
 # Definir colores
@@ -14,6 +13,8 @@ blanco="\e[1;37m"
 b="\e[0;37m"
 amarillo="\e[1;33m"
 a="\e[0;33m"
+azul="\e[1;34m"
+az="\e[0;34m"
 fin="\e[0m"
 
 fun_bar () {
@@ -61,7 +62,7 @@ ${comando[1]} > /dev/null 2>&1
 touch $HOME/fim
  ) > /dev/null 2>&1 &
  tput civis
-echo -ne "  ${amarillo}AGUARDE \e[1;37m- ${amarillo}["
+echo -ne "  ${amarillo}PROCESANDO \e[1;37m- ${amarillo}["
 while true; do
    for((i=0; i<18; i++)); do
    echo -ne "${rojo}#"
@@ -72,7 +73,7 @@ while true; do
    sleep 1s
    tput cuu1
    tput dl1
-   echo -ne "  ${amarillo}AGUARDE \e[1;37m- ${amarillo}["
+   echo -ne "  ${amarillo}PROCESANDO \e[1;37m- ${amarillo}["
 done
 echo -e "${amarillo}]\e[1;37m -${verde} OK !\e[1;37m"
 tput cnorm
@@ -81,7 +82,7 @@ fun_tst () {
 speedtest --share > speed
 }
 echo ""
-echo -e "   ${verde}TESTANDO LA VELOCIDAD Del VPS !\e[0m"
+echo -e "   ${verde}EJECUTANDO TEST DE VELOCIDAD...\e[0m"
 echo ""
 aguarde 'fun_tst'
 echo ""
@@ -100,7 +101,7 @@ rm -rf $HOME/speed
 #limiter
 function limit1 () {
    clear
-   echo -e "\n${verde}INICIANDO el LIMITER... \e[0m"
+   echo -e "\n${verde}INICIANDO CONTROL DE ANCHO DE BANDA... \e[0m"
    echo ""
    fun_bar 'screen -dmS limiter limiter' 'sleep 3'
    [[ $(grep -wc "limiter" /etc/autostart) = '0' ]] && {
@@ -109,13 +110,13 @@ function limit1 () {
        sed -i '/limiter/d' /etc/autostart
 	   echo -e "ps x | grep 'limiter' | grep -v 'grep' && echo 'ON' || screen -dmS limiter limiter" >> /etc/autostart
    }
-   echo -e "\n${verde}  LIMITER ACTIVO !\e[0m"
+   echo -e "\n${verde}  CONTROL ACTIVADO !\e[0m"
    sleep 3
    menu
 }
 function limit2 () {
    clear
-   echo -e "${verde}PARANDO el LIMITER... \e[0m"
+   echo -e "${verde}DETENIENDO CONTROL... \e[0m"
    echo ""
    fun_stplimiter () {
       sleep 1
@@ -127,7 +128,7 @@ function limit2 () {
       sleep 1
    }
    fun_bar 'fun_stplimiter' 'sleep 3'
-   echo -e "\n${rojo} LIMITER PARADO !\e[0m"
+   echo -e "\n${rojo} CONTROL DETENIDO !\e[0m"
    sleep 3
    menu
 }
@@ -137,7 +138,7 @@ function limit_ssh () {
 #onlineapp
 function onapp1 () {
    clear
-   echo -e "\n${verde}INICIANDO  ONLINE APP... \e[0m"
+   echo -e "\n${verde}INICIANDO MONITOR WEB... \e[0m"
    echo ""
    apt install apache2 -y > /dev/null 2>&1
    sed -i "s/Listen 80/Listen 8888/g" /etc/apache2/ports.conf >/dev/null 2>&1
@@ -152,15 +153,15 @@ function onapp1 () {
 	   echo -e "ps x | grep 'onlineapp' | grep -v 'grep' && echo 'ON' || screen -dmS onlineapp onlineapp" >> /etc/autostart
    }
    IP=$(wget -qO- ipv4.icanhazip.com) >/dev/null 2>&1
-   echo -e "\n${verde}  ONLINE APP ATIVO !\e[0m"
-   echo -e "${rojo} ${amarillo}URL de Usuários Online para usar no App\e[0m"
+   echo -e "\n${verde}  MONITOR WEB ACTIVO !\e[0m"
+   echo -e "${rojo} ${amarillo}URL de monitoreo:\e[0m"
    echo -e " http://$IP:8888/server/online"
    sleep 10
    menu
 }
 function onapp2 () {
    clear
-   echo -e "${verde}PARANDO  ONLINE APP... \e[0m"
+   echo -e "${verde}DETENIENDO MONITOR WEB... \e[0m"
    echo ""
    fun_stponlineapp () {
       sleep 1
@@ -173,7 +174,7 @@ function onapp2 () {
    }
    fun_bar 'fun_stponlineapp' 'sleep 3'
    rm -rf /var/www/html/server >/dev/null 2>&1
-   echo -e "\n${rojo} ONLINE APP PARADO !\e[0m"
+   echo -e "\n${rojo} MONITOR WEB DETENIDO !\e[0m"
    sleep 3
    menu
 }
@@ -184,19 +185,19 @@ function onapp_ssh () {
 function autoexec () {
    if grep "menu;" /etc/profile > /dev/null; then
       clear
-      echo -e "${verde}DESACTIVANDO AUTO EJECUCION\e[0m"
+      echo -e "${verde}DESACTIVANDO AUTO INICIO\e[0m"
       offautmenu () {
          sed -i '/menu;/d' /etc/profile
       }
       echo ""
       fun_bar 'offautmenu'
       echo ""
-      echo -e "${rojo}AUTO EJECUCION DESACTIVADO!\e[0m"
+      echo -e "${rojo}AUTO INICIO DESACTIVADO!\e[0m"
       sleep 1.5s
       menu2
    else
       clear
-      echo -e "${verde}ACTIVANDO AUTO EJECUCION\e[0m"
+      echo -e "${verde}ACTIVANDO AUTO INICIO\e[0m"
       autmenu () {
          grep -v "^menu;" /etc/profile > /tmp/tmpass && mv /tmp/tmpass /etc/profile
          echo "menu;" >> /etc/profile
@@ -204,7 +205,7 @@ function autoexec () {
       echo ""
       fun_bar 'autmenu'
       echo ""
-      echo -e "${verde}AUTO EXECUCION ACTIVADO!\e[0m"
+      echo -e "${verde}AUTO INICIO ACTIVADO!\e[0m"
       sleep 1.5s
       menu2
    fi
@@ -242,29 +243,25 @@ _onlin=$(printf '%-5s' "$_onli")
 _userexp=$(printf '%-5s' "$_expuser")
 _tuser=$(awk -F: '$3>=1000 {print $1}' /etc/passwd | grep -v nobody | wc -l)
 clear
-echo -e "═══════════════════════════════════════════════════════"
-echo -e "${cyan}  SISTEMA         MEMORIA RAM      PROCESADOR"
-echo -e "${amarillo}  $_system   Ram:${verde}$_ram     Cpu: ${amarillo}$_core\e[0m"
-echo -e "${rojo}  Script MGVPN     💾${verde}$_usor  🖥${verde}$_usop\e[0m"
-echo -e "═══════════════════════════════════════════════════════"
-[[ ! -e /tmp/att ]]  && {
-    echo -e "${amarillo}  Onlines:${verde} $_onlin     ${blanco}Expirados: ${rojo}$_userexp ${amarillo}Total: ${verde}$_tuser\e[0m"
-} || {
-    echo -e "  ${rojo} ACTUALIZACION DISPONIBLE  ${rojo}!✅${fin}"
-}
-echo -e "═══════════════════════════════════════════════════════"
+echo -e "${azul}╔═══════════════════════════════════════════════════════╗${fin}"
+echo -e "${azul}║${fin} ${cyan}  MGVPN MANAGER v3.0 - PANEL AVANZADO${fin}                    ${azul}║${fin}"
+echo -e "${azul}╠═══════════════════════════════════════════════════════╣${fin}"
+echo -e "${azul}║${fin} ${amarillo}  SISTEMA:${verde} $_system${fin}  ${amarillo}RAM:${verde}$_ram${fin}  ${amarillo}CPU:${verde}$_core${fin}          ${azul}║${fin}"
+echo -e "${azul}║${fin} ${rojo}  MGVPN${fin}  ${amarillo}RAM USO:${verde}$_usor${fin}  ${amarillo}CPU USO:${verde}$_usop${fin}            ${azul}║${fin}"
+echo -e "${azul}║${fin} ${amarillo}  ONLINE:${verde} $_onlin${fin}  ${amarillo}EXPIRADOS:${rojo} $_userexp${fin}  ${amarillo}TOTAL:${verde}$_tuser${fin}        ${azul}║${fin}"
+echo -e "${azul}╚═══════════════════════════════════════════════════════╝${fin}"
 echo ""
-echo -e "${cyan}[21]${amarillo} ADICIONAR HOST      ${cyan}[28] ${amarillo} EDITAR PASS ROOT"
-echo -e "${cyan}[22]${amarillo} REMOVER HOST        ${cyan}[29] ${amarillo} AUTO INICIO $autm"
-echo -e "${cyan}[23]${amarillo} REINICIAR SISTEMA   ${cyan}[30] ${amarillo} ACTUALIZAR SCRIPT"
-echo -e "${cyan}[24]${amarillo} REINICIAR SERVICIOS ${cyan}[31]${amarillo} BORRAR SCRIPT"
-echo -e "${cyan}[25]${amarillo} BLOCK TORRENT $stsf  ${cyan}[32]${amarillo} VOLVER"
-echo -e "${cyan}[26]${amarillo} BOT TELEGRAM $stsbot   ${cyan}[00]${amarillo} SALIR"
-echo -e "${cyan}[27]${amarillo} BOT TESTE $stsbotteste"
+echo -e "${azul}  ┌─────────────────────────────────────────────────────┐${fin}"
+echo -e "${azul}  │${fin} ${cyan}[21]${amarillo} AGREGAR HOST      ${cyan}[28]${amarillo} CAMBIAR PASS    ${azul}│${fin}"
+echo -e "${azul}  │${fin} ${cyan}[22]${amarillo} ELIMINAR HOST     ${cyan}[29]${amarillo} AUTO INICIO $autm  ${azul}│${fin}"
+echo -e "${azul}  │${fin} ${cyan}[23]${amarillo} REINICIAR SISTEMA ${cyan}[30]${amarillo} ACTUALIZAR     ${azul}│${fin}"
+echo -e "${azul}  │${fin} ${cyan}[24]${amarillo} REINICIAR SERV.   ${cyan}[31]${amarillo} ELIMINAR       ${azul}│${fin}"
+echo -e "${azul}  │${fin} ${cyan}[25]${amarillo} BLOQ TORRENT $stsf  ${cyan}[32]${amarillo} VOLVER         ${azul}│${fin}"
+echo -e "${azul}  │${fin} ${cyan}[26]${amarillo} BOT TELEGRAM $stsbot  ${cyan}[00]${amarillo} SALIR          ${azul}│${fin}"
+echo -e "${azul}  │${fin} ${cyan}[27]${amarillo} BOT TEST $stsbotteste ${azul}                    │${fin}"
+echo -e "${azul}  └─────────────────────────────────────────────────────┘${fin}"
 echo ""
-echo -e "═══════════════════════════════════════════════════════"
-echo ""
-echo -ne "${verde}  QUE DESEA HACER ${amarillo}?${rojo}?${blanco} : "; read x
+echo -ne "${verde}  OPCION ${amarillo}?${rojo}?${blanco} : "; read x
 case "$x" in
    21)
    clear
@@ -358,28 +355,29 @@ CPU_USAGE=$((100 - CPU_IDLE))
 _userexp=$(printf '%-5s' "$_expuser")
 _tuser=$(awk -F: '$3>=1000 {print $1}' /etc/passwd | grep -v nobody | wc -l)
 clear
-echo -e "═══════════════════════════════════════════════════════"
-echo -e "${cyan}  SISTEMA        MEMORIA RAM      PROCESADOR"
-echo -e "${a}  $_system   Ram:${a}$_ram  ${rojo} Cpu:${v} $_core \e[0m"
-echo -e "${rojo}  Script MGVPN     💾${v}$_usor     🖥${v} $CPU_USAGE% \e[0m"
-echo -e "${a}  Onlines:${v} $_onlin    ${v}Expirados:${r} $_userexp ${b}Total:${v}$_tuser \e[0m"
-echo -e "═══════════════════════════════════════════════════════"
+echo -e "${azul}╔═══════════════════════════════════════════════════════╗${fin}"
+echo -e "${azul}║${fin} ${cyan}  MGVPN MANAGER v3.0 - PANEL PRINCIPAL${fin}                   ${azul}║${fin}"
+echo -e "${azul}╠═══════════════════════════════════════════════════════╣${fin}"
+echo -e "${azul}║${fin} ${amarillo}  SISTEMA:${v} $_system${fin}  ${amarillo}RAM:${v}$_ram${fin}  ${amarillo}CPU:${v}$_core${fin}            ${azul}║${fin}"
+echo -e "${azul}║${fin} ${rojo}  MGVPN${fin}  ${amarillo}RAM USO:${v}$_usor${fin}  ${amarillo}CPU USO:${v}$CPU_USAGE%${fin}          ${azul}║${fin}"
+echo -e "${azul}║${fin} ${a}  ONLINE:${v} $_onlin${fin}  ${a}EXPIRADOS:${r} $_userexp${fin}  ${a}TOTAL:${v}$_tuser${fin}          ${azul}║${fin}"
+echo -e "${azul}╚═══════════════════════════════════════════════════════╝${fin}"
 echo ""
-echo -e "${cyan}  [01]${amarillo} CREAR USUARIO        ${cyan}[11]${amarillo} SPEEDTEST"
-echo -e "${cyan}  [02]${amarillo} SISTEMA HWID         ${cyan}[12]${amarillo} BANNER"
-echo -e "${cyan}  [03]${amarillo} REMOVER USUARIO      ${cyan}[13]${amarillo} MENU TOKEN"
-echo -e "${cyan}  [04]${amarillo} MONITOR ONLINE       ${cyan}[14]${amarillo} PUERTOS ACTIVOS"
-echo -e "${cyan}  [05]${amarillo} EDITAR FECHA         ${cyan}[15]${amarillo} BACKUP USER"
-echo -e "${cyan}  [06]${amarillo} EDITAR LIMITE        ${cyan}[16]${amarillo} MENU PYTHON3 $pyt"
-echo -e "${cyan}  [07]${amarillo} EDITAR CONTRASEÑA    ${cyan}[17]${amarillo} LIMITER $stsl"
-echo -e "${cyan}  [08]${amarillo} BORRAR EXPIRADOS     ${cyan}[18]${amarillo} BAD VPN $stsu"
-echo -e "${cyan}  [09]${amarillo} INFO DE USUARIOS     ${cyan}[19]${amarillo} LIMPIAR RAM"
-echo -e "${cyan}  [10]${amarillo} MENU INSTALADOR      ${cyan}[20]${amarillo} INFO VPS"
-echo -e "${rojo}  [00]${amarillo} SALIR               ${cyan}[21]${amarillo} MENU 2"
+echo -e "${azul}  ┌─────────────────────────────────────────────────────┐${fin}"
+echo -e "${azul}  │${fin} ${cyan}[01]${amarillo} CREAR USUARIO     ${cyan}[11]${amarillo} TEST VELOCIDAD  ${azul}│${fin}"
+echo -e "${azul}  │${fin} ${cyan}[02]${amarillo} SISTEMA HWID      ${cyan}[12]${amarillo} BANNER          ${azul}│${fin}"
+echo -e "${azul}  │${fin} ${cyan}[03]${amarillo} ELIMINAR USUARIO  ${cyan}[13]${amarillo} MENU TOKEN      ${azul}│${fin}"
+echo -e "${azul}  │${fin} ${cyan}[04]${amarillo} MONITOR ONLINE    ${cyan}[14]${amarillo} PUERTOS ACTIVOS ${azul}│${fin}"
+echo -e "${azul}  │${fin} ${cyan}[05]${amarillo} EDITAR FECHA      ${cyan}[15]${amarillo} BACKUP USER     ${azul}│${fin}"
+echo -e "${azul}  │${fin} ${cyan}[06]${amarillo} EDITAR LIMITE     ${cyan}[16]${amarillo} MENU PYTHON3 $pyt ${azul}│${fin}"
+echo -e "${azul}  │${fin} ${cyan}[07]${amarillo} EDITAR PASS       ${cyan}[17]${amarillo} LIMITER $stsl    ${azul}│${fin}"
+echo -e "${azul}  │${fin} ${cyan}[08]${amarillo} BORRAR EXPIRADOS  ${cyan}[18]${amarillo} BAD VPN $stsu    ${azul}│${fin}"
+echo -e "${azul}  │${fin} ${cyan}[09]${amarillo} INFO USUARIOS     ${cyan}[19]${amarillo} LIMPIAR RAM      ${azul}│${fin}"
+echo -e "${azul}  │${fin} ${cyan}[10]${amarillo} MENU INSTALADOR   ${cyan}[20]${amarillo} INFO VPS         ${azul}│${fin}"
+echo -e "${azul}  │${fin} ${rojo}[00]${amarillo} SALIR            ${cyan}[21]${amarillo} MENU 2           ${azul}│${fin}"
+echo -e "${azul}  └─────────────────────────────────────────────────────┘${fin}"
 echo ""
-echo -e "═══════════════════════════════════════════════════════"
-echo ""
-echo -ne "${verde}  QUE DESEA HACER ${amarillo}?${rojo}?${blanco} : "; read x
+echo -ne "${verde}  OPCION ${amarillo}?${rojo}?${blanco} : "; read x
 
 case "$x" in 
    1 | 01)
@@ -400,7 +398,7 @@ case "$x" in
    4 | 04)
    clear
    sshmonitor
-   echo -ne "\n${rojo}Script MGVPN ${amarillo} VPS: ${verde}wep!\e[0m\n${rojo}ENTER ${amarillo}para VOLVER al ${verde}MENU!\e[0m"; read
+   echo -ne "\n${rojo}MGVPN ${amarillo} VPS: ${verde}wep!\e[0m\n${rojo}ENTER ${amarillo}para VOLVER al ${verde}MENU!\e[0m"; read
    ;;      
    5 | 05)
    clear
@@ -426,7 +424,7 @@ case "$x" in
    9 | 09)
    clear
    infousers
-   echo -ne "\n${rojo}Script MGVPN ${amarillo} VPS: ${verde}\e[0m\n${rojo}ENTER ${amarillo}para VOLVER al ${verde}MENU!\e[0m"; read
+   echo -ne "\n${rojo}MGVPN ${amarillo} VPS: ${verde}\e[0m\n${rojo}ENTER ${amarillo}para VOLVER al ${verde}MENU!\e[0m"; read
    ;;
    10)
    conexao
