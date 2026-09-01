@@ -369,7 +369,7 @@ echo -e "${azul}  │${fin} ${cyan}[02]${amarillo} SISTEMA HWID      ${cyan}[12]
 echo -e "${azul}  │${fin} ${cyan}[03]${amarillo} ELIMINAR USUARIO  ${cyan}[13]${amarillo} MENU TOKEN      ${azul}│${fin}"
 echo -e "${azul}  │${fin} ${cyan}[04]${amarillo} MONITOR ONLINE    ${cyan}[14]${amarillo} PUERTOS ACTIVOS ${azul}│${fin}"
 echo -e "${azul}  │${fin} ${cyan}[05]${amarillo} EDITAR FECHA      ${cyan}[15]${amarillo} BACKUP USER     ${azul}│${fin}"
-echo -e "${azul}  │${fin} ${cyan}[06]${amarillo} EDITAR LIMITE     ${cyan}[16]${amarillo} MENU PYTHON3 $pyt ${azul}│${fin}"
+echo -e "${azul}  │${fin} ${cyan}[06]${amarillo} EDITAR LIMITE     ${cyan}[16]${amarillo} PYTHON WS $pyt   ${azul}│${fin}"
 echo -e "${azul}  │${fin} ${cyan}[07]${amarillo} EDITAR PASS       ${cyan}[17]${amarillo} LIMITER $stsl    ${azul}│${fin}"
 echo -e "${azul}  │${fin} ${cyan}[08]${amarillo} BORRAR EXPIRADOS  ${cyan}[18]${amarillo} BAD VPN $stsu    ${azul}│${fin}"
 echo -e "${azul}  │${fin} ${cyan}[09]${amarillo} INFO USUARIOS     ${cyan}[19]${amarillo} LIMPIAR RAM      ${azul}│${fin}"
@@ -454,7 +454,8 @@ case "$x" in
    echo -ne "\n${rojo}ENTER ${amarillo}PARA VOLVER al ${verde}MENU!\e[0m"; read
    ;;
    16)
-   source <(curl -sL https://gitlab.com/diegovip7/SSHPLUS/-/raw/main/Modulos/s2.sh)
+   clear
+   /bin/pyproxy
    ;;
    17)
    limit_ssh
