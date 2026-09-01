@@ -1,0 +1,13 @@
+#!/bin/bash
+clear
+echo "======================================="
+echo "  HWIDs REGISTRADOS                   "
+echo "======================================="
+echo ""
+if [ -f /etc/SSHPlus/hwid/hwid.db ]; then
+    cat /etc/SSHPlus/hwid/hwid.db
+else
+    echo "No hay HWIDs registrados"
+fi
+echo ""
+read -p "ENTER para volver..."
