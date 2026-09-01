@@ -1,0 +1,43 @@
+#!/bin/bash
+clear
+echo "======================================="
+echo "  CREAR HWID                          "
+echo "======================================="
+echo ""
+echo -ne "NOMBRE: "; read nome
+if [ -z "$nome" ]; then
+    echo "Nombre vacío"
+    exit 1
+fi
+echo -ne "HWID: "; read hwid_cliente
+if [ -z "$hwid_cliente" ]; then
+    echo "HWID vacío"
+    exit 1
+fi
+echo -ne "LIMITE: "; read limite
+if [ -z "$limite" ]; then
+    echo "Límite vacío"
+    exit 1
+fi
+echo -ne "DIAS: "; read dias
+if [ -z "$dias" ]; then
+    echo "Días vacíos"
+    exit 1
+fi
+mkdir -p /etc/SSHPlus/hwid
+LICENSE=$(echo "$hwid_cliente$nome$(date +%s)" | md5sum | awk '{print $1}')
+KEY="${LICENSE:0:8}-${LICENSE:8:4}-${LICENSE:12:4}-${LICENSE:16:4}-${LICENSE:20:12}"
+echo "$nome|$hwid_cliente|$limite|$dias|$KEY|$(date +%Y-%m-%d)" >> /etc/SSHPlus/hwid/hwid.db
+echo "$KEY" > /etc/SSHPlus/hwid/$nome.key
+echo ""
+echo "======================================="
+echo "  HWID CREADO EXITOSAMENTE            "
+echo "======================================="
+echo ""
+echo "Nombre: $nome"
+echo "HWID: $hwid_cliente"
+echo "Limite: $limite"
+echo "Dias: $dias"
+echo "Licencia: $KEY"
+echo ""
+read -p "ENTER para volver..."
