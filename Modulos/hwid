@@ -1,0 +1,103 @@
+cat > /bin/hwid << 'EOF'
+#!/bin/bash
+# MGVPN - Sistema HWID (formato ChumoGH) - Solo HWID, sin contraseña
+clear
+echo "═══════════════════════════════════════════════════════"
+echo "  MGVPN - SISTEMA HWID"
+echo "═══════════════════════════════════════════════════════"
+echo ""
+echo " [1] CREAR USUARIO CON HWID"
+echo " [2] VER USUARIOS HWID"
+echo " [3] ELIMINAR HWID"
+echo " [0] VOLVER"
+echo ""
+read -p " ► Opción: " opt
+
+case $opt in
+    1)
+        clear
+        echo -ne "NOMBRE DEL CLIENTE: "; read nome
+        echo -ne "HWID (APP-XXXX): "; read hwid
+        echo -ne "DIAS: "; read dias
+        echo -ne "LIMITE: "; read limite
+
+        if ! [[ "$dias" =~ ^[0-9]+$ ]]; then
+            echo "✗ Días inválido, debe ser un número"
+            sleep 2
+            /bin/hwid
+            exit
+        fi
+
+        if id "$hwid" &>/dev/null; then
+            echo "✗ Ese HWID ya existe en el sistema. Elimínalo primero (opción 3) o usa otro HWID."
+            sleep 3
+            /bin/hwid
+            exit
+        fi
+
+        useradd -M -s /bin/false -c "HWID,$nome" -e $(date -d "+$dias days" +%Y-%m-%d) "$hwid"
+        if [ $? -ne 0 ]; then
+            echo "✗ Error al crear el usuario en el sistema"
+            sleep 2
+            /bin/hwid
+            exit
+        fi
+        passwd -d "$hwid" > /dev/null 2>&1
+
+        echo "$nome|$hwid|$dias|$limite" >> /etc/SSHPlus/hwid.db
+        echo "$hwid $limite" >> /root/usuarios.db
+
+        clear
+        echo "═══════════════════════════════════════════════════════"
+        echo "  USUARIO HWID CREADO"
+        echo "═══════════════════════════════════════════════════════"
+        echo ""
+        echo "  Nombre: $nome"
+        echo "  HWID (usuario): $hwid"
+        echo "  Expira en: $dias días"
+        echo "  Límite: $limite conexiones"
+        echo ""
+        echo "  ⚠ En la app solo se pone el HWID, sin contraseña"
+        echo ""
+        read -p "ENTER para volver..."
+        /bin/hwid
+        ;;
+    2)
+        clear
+        echo "NOMBRE          HWID                      DIAS RESTANTES"
+        echo "─────────────────────────────────────────────────────────"
+        while IFS='|' read -r nome hwid dias limite; do
+            [ -z "$hwid" ] && continue
+            exp=$(chage -l "$hwid" 2>/dev/null | grep "Account expires" | cut -d: -f2 | sed 's/^ *//')
+            if [ -n "$exp" ] && [ "$exp" != "never" ]; then
+                hoy=$(date +%s)
+                expira=$(date -d "$exp" +%s 2>/dev/null)
+                restante=$(( (expira - hoy) / 86400 ))
+            else
+                restante="N/A"
+            fi
+            printf "%-15s %-25s %s\n" "$nome" "$hwid" "$restante"
+        done < /etc/SSHPlus/hwid.db
+        echo ""
+        read -p "ENTER para volver..."
+        /bin/hwid
+        ;;
+    3)
+        clear
+        echo -ne "HWID a eliminar: "; read hwid
+        userdel -f "$hwid" 2>/dev/null
+        sed -i "/|$hwid|/d" /etc/SSHPlus/hwid.db
+        sed -i "/^$hwid /d" /root/usuarios.db
+        echo "✓ HWID eliminado"
+        sleep 2
+        /bin/hwid
+        ;;
+    0)
+        /bin/menu
+        ;;
+    *)
+        /bin/hwid
+        ;;
+esac
+EOF
+chmod +x /bin/hwid
