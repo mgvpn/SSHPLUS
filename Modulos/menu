@@ -387,8 +387,7 @@ case "$x" in
    ;;
    2 | 02)
    clear
-   criarhwid
-   echo -ne "\n${rojo} ENTER ${amarillo}para VOLVER al ${verde}MENU!\e[0m"; read
+   /bin/hwid
    ;;
    3 | 03)
    clear
