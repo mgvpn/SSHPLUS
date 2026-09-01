@@ -1,49 +1,87 @@
 #!/bin/bash
+
+check_status() {
+    if ps x | grep -w "proxy.py" | grep -v grep 1>/dev/null 2>/dev/null; then
+        echo -e "\033[1;32m[ACTIVO]\033[0m"
+    else
+        echo -e "\033[1;31m[INACTIVO]\033[0m"
+    fi
+}
+
 clear
 echo -e "\033[1;31m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-echo -e "\033[1;33m  ACTIVAR PYTHON WS\033[0m"
+echo -e "\033[1;33m  PYTHON WS - PANEL DE CONTROL\033[0m"
 echo -e "\033[1;31m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
 echo ""
 
-# Pedir puerto Python WS
-echo -ne "\033[1;32mPuerto Python WS:\033[1;37m "
-read pt_python
-
-if [[ -z $pt_python ]]; then
-    echo -e "\n\033[1;31mPuerto inválido!\033[0m"
-    sleep 2
-    exit 1
-fi
-
-# Pedir puerta SSH
-echo -ne "\033[1;32mPuerta SSH:\033[1;37m "
-read pt_ssh
-
-if [[ -z $pt_ssh ]]; then
-    pt_ssh="22"
-fi
-
-echo ""
-echo -e "\033[1;32mActivando Python WS en puerto \033[1;33m$pt_python\033[1;32m con SSH en puerta \033[1;33m$pt_ssh\033[0m..."
-echo ""
-
-# Matar procesos anteriores
-pkill -f proxy.py 2>/dev/null
-pkill -f open.py 2>/dev/null
-sleep 1
-
-# Activar proxy Python WS
-nohup python3 /etc/SSHPlus/proxy.py $pt_python > /dev/null 2>&1 &
-
-sleep 2
-
-# Verificar si se activó
-if netstat -ntpl | grep -q ":$pt_python"; then
-    echo -e "\033[1;32m✓ Python WS activado en puerto \033[1;33m$pt_python\033[0m"
-    echo -e "\033[1;32m✓ SSH en puerta \033[1;33m$pt_ssh\033[0m"
+if ps x | grep -w "proxy.py" | grep -v grep 1>/dev/null 2>/dev/null; then
+    pt_atual=$(netstat -nplt 2>/dev/null | grep python2 | awk '{print $4}' | cut -d: -f2 | head -1)
+    echo -e "\033[1;32mEstado: ACTIVO en puerto $pt_atual\033[0m"
 else
-    echo -e "\033[1;31m✗ Error al activar Python WS\033[0m"
+    echo -e "\033[1;31mEstado: INACTIVO\033[0m"
 fi
 
 echo ""
-read -p "ENTER para volver..."
+echo -e "\033[1;31m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo ""
+echo -e "\033[1;37m [1] ACTIVAR PYTHON WS\033[0m"
+echo -e "\033[1;37m [2] DESACTIVAR PYTHON WS\033[0m"
+echo -e "\033[1;37m [0] VOLVER\033[0m"
+echo ""
+read -p " ► Opción: " option
+
+case $option in
+    1)
+        clear
+        echo -e "\033[1;32mACTIVAR PYTHON WS\033[0m"
+        echo ""
+        echo -ne "\033[1;32mPuerto Python WS:\033[1;37m "
+        read pt_python
+        if [[ -z $pt_python ]]; then
+            echo -e "\n\033[1;31mPuerto inválido!\033[0m"
+            sleep 2
+            /bin/pyproxy
+        fi
+        echo -ne "\033[1;32mPuerta SSH:\033[1;37m "
+        read pt_ssh
+        if [[ -z $pt_ssh ]]; then
+            pt_ssh="22"
+        fi
+        echo ""
+        echo -e "\033[1;32mActivando Python WS en puerto \033[1;33m$pt_python\033[1;32m con SSH en puerta \033[1;33m$pt_ssh\033[0m..."
+        pkill -f proxy.py 2>/dev/null
+        pkill -f open.py 2>/dev/null
+        sleep 1
+        nohup python2 /etc/SSHPlus/proxy.py $pt_python > /dev/null 2>&1 &
+        sleep 2
+        if netstat -ntpl | grep -q ":$pt_python"; then
+            echo -e "\033[1;32m✓ Python WS activado en puerto \033[1;33m$pt_python\033[0m"
+            echo -e "\033[1;32m✓ SSH en puerta \033[1;33m$pt_ssh\033[0m"
+        else
+            echo -e "\033[1;31m✗ Error al activar Python WS\033[0m"
+        fi
+        echo ""
+        read -p "ENTER para volver..."
+        /bin/pyproxy
+        ;;
+    2)
+        clear
+        echo -e "\033[1;31mDESACTIVAR PYTHON WS\033[0m"
+        echo ""
+        pkill -f proxy.py 2>/dev/null
+        pkill -f open.py 2>/dev/null
+        sleep 2
+        echo -e "\033[1;32m✓ Python WS desactivado\033[0m"
+        echo ""
+        read -p "ENTER para volver..."
+        /bin/pyproxy
+        ;;
+    0)
+        /bin/menu
+        ;;
+    *)
+        echo "Opción inválida"
+        sleep 2
+        /bin/pyproxy
+        ;;
+esac
