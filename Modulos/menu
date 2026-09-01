@@ -1,6 +1,6 @@
 #!/bin/bash
 # ═══════════════════════════════════════════════════════════
-#  SSH-PLUS-MANAGER - PANEL PRINCIPAL
+#  Script MGVPN - PANEL PRINCIPAL
 #  Diseño profesional con sistema HWID
 # ═══════════════════════════════════════════════════════════
 
@@ -245,7 +245,7 @@ clear
 echo -e "═══════════════════════════════════════════════════════"
 echo -e "${cyan}  SISTEMA         MEMORIA RAM      PROCESADOR"
 echo -e "${amarillo}  $_system   Ram:${verde}$_ram     Cpu: ${amarillo}$_core\e[0m"
-echo -e "${rojo}  Mod: ${verde}   ${verde}$_usor  ${verde}$_usop\e[0m"
+echo -e "${rojo}  Script MGVPN     💾${verde}$_usor  🖥${verde}$_usop\e[0m"
 echo -e "═══════════════════════════════════════════════════════"
 [[ ! -e /tmp/att ]]  && {
     echo -e "${amarillo}  Onlines:${verde} $_onlin     ${blanco}Expirados: ${rojo}$_userexp ${amarillo}Total: ${verde}$_tuser\e[0m"
@@ -361,7 +361,7 @@ clear
 echo -e "═══════════════════════════════════════════════════════"
 echo -e "${cyan}  SISTEMA        MEMORIA RAM      PROCESADOR"
 echo -e "${a}  $_system   Ram:${a}$_ram  ${rojo} Cpu:${v} $_core \e[0m"
-echo -e "${rojo}  Argentina🇦🇷     💾${v}$_usor     🖥${v} $CPU_USAGE% \e[0m"
+echo -e "${rojo}  Script MGVPN     💾${v}$_usor     🖥${v} $CPU_USAGE% \e[0m"
 echo -e "${a}  Onlines:${v} $_onlin    ${v}Expirados:${r} $_userexp ${b}Total:${v}$_tuser \e[0m"
 echo -e "═══════════════════════════════════════════════════════"
 echo ""
@@ -400,7 +400,7 @@ case "$x" in
    4 | 04)
    clear
    sshmonitor
-   echo -ne "\n${rojo}ARGENTINA 🇦🇷 ${amarillo} VPS: ${verde}wep!\e[0m\n${rojo}ENTER ${amarillo}para VOLVER al ${verde}MENU!\e[0m"; read
+   echo -ne "\n${rojo}Script MGVPN ${amarillo} VPS: ${verde}wep!\e[0m\n${rojo}ENTER ${amarillo}para VOLVER al ${verde}MENU!\e[0m"; read
    ;;      
    5 | 05)
    clear
@@ -426,7 +426,7 @@ case "$x" in
    9 | 09)
    clear
    infousers
-   echo -ne "\n${rojo}Argentina 🇦🇷 ${amarillo} VPS: ${verde}\e[0m\n${rojo}ENTER ${amarillo}para VOLVER al ${verde}MENU!\e[0m"; read
+   echo -ne "\n${rojo}Script MGVPN ${amarillo} VPS: ${verde}\e[0m\n${rojo}ENTER ${amarillo}para VOLVER al ${verde}MENU!\e[0m"; read
    ;;
    10)
    conexao
